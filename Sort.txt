@@ -1,0 +1,114 @@
+//bubble sort
+void bubbleSort(vector<int>& arr)
+{
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++)
+        for (int j = 0; j < n - i - 1; j++)
+            if (arr[j] > arr[j + 1])
+                swap(arr[j], arr[j + 1]);
+}
+
+
+
+//merge
+void merge(vector<int>& arr, int left, int mid, int right)
+{
+    int n1 = mid - left + 1;
+    int n2 = right - mid;
+
+    vector<int> L(n1), R(n2);
+    for (int i = 0; i < n1; i++) L[i] = arr[left + i];
+    for (int j = 0; j < n2; j++) R[j] = arr[mid + 1 + j];
+
+    int i = 0, j = 0, k = left;
+    while (i < n1 && j < n2) arr[k++] = (L[i] <= R[j]) ? L[i++] : R[j++];
+    while (i < n1) arr[k++] = L[i++];
+    while (j < n2) arr[k++] = R[j++];
+}
+
+
+
+//selection sort
+void selectionSort(vector<int>& arr)
+{
+    int n = arr.size();
+    for (int i = 0; i < n - 1; i++) {
+        int minIdx = i;
+        for (int j = i + 1; j < n; j++)
+            if (arr[j] < arr[minIdx])
+                minIdx = j;
+        swap(arr[i], arr[minIdx]);
+    }
+}
+
+
+
+//merge sort
+void mergeSort(vector<int>& arr, int left, int right)
+{
+    if (left < right)
+   {
+        int mid = left + (right - left) / 2;
+        mergeSort(arr, left, mid);
+        mergeSort(arr, mid + 1, right);
+        merge(arr, left, mid, right);
+    }
+}
+
+
+
+//partition
+int partition(vector<int>& arr, int low, int high)
+{
+    int pivot = arr[high];
+    int i = low - 1;
+    for (int j = low; j < high; j++)
+    {
+        if (arr[j] < pivot)
+        {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+
+
+//quick sort
+void quickSort(vector<int>& arr, int low, int high)
+{
+    if (low < high)
+    {
+        int pi = partition(arr, low, high);
+        quickSort(arr, low, pi - 1);
+        quickSort(arr, pi + 1, high);
+    }
+}
+
+
+
+
+				TIME MEASUREMENT FOR CODE //helped from gpt
+double measureTime(void (*sortFunc)(vector<int>&), vector<int> arr)
+{
+    auto start = chrono::high_resolution_clock::now();
+    sortFunc(arr);
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
+}
+
+double measureTime(void (*sortFunc)(vector<int>&, int, int), vector<int> arr, int low, int high)
+{
+    auto start = chrono::high_resolution_clock::now();
+    sortFunc(arr, low, high);
+    auto end = chrono::high_resolution_clock::now();
+    chrono::duration<double> elapsed = end - start;
+    return elapsed.count();
+}
+
+
+
+				
